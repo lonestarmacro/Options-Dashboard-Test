@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Most Active Options — Feb 26, 2026 | Lone Star Macro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --s900:#0f172a;--s700:#334155;--s500:#64748b;--s400:#94a3b8;--s300:#cbd5e1;
+    --s200:#e2e8f0;--s100:#f1f5f9;--s50:#f8fafc;
+    --r600:#dc2626;--r100:#fee2e2;--g600:#16a34a;--g100:#dcfce7;
+    --b600:#2563eb;--b100:#dbeafe;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'IBM Plex Sans',-apple-system,sans-serif;background:#fff;color:var(--s900);line-height:1.5}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .serif{font-family:'DM Serif Display',Georgia,serif}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 20px}
+
+  /* Header */
+  .hdr{border-bottom:3px solid var(--s900);padding-bottom:12px;margin-bottom:24px}
+  .hdr .ey{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--s500)}
+  .hdr h1{font-family:'DM Serif Display',Georgia,serif;font-size:28px;font-weight:400;letter-spacing:-.03em;margin:4px 0 2px}
+  .hdr .sub{font-size:12px;color:var(--s500)}
+
+  /* Stats row */
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+  .stat{background:var(--s50);border:1px solid var(--s200);border-radius:8px;padding:12px 16px;flex:1;min-width:120px}
+  .stat .l{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--s500)}
+  .stat .v{font-size:22px;font-weight:700;color:var(--s900);margin-top:1px}
+  .stat .s{font-size:10px;color:var(--s400);margin-top:1px}
+
+  /* Tabs */
+  .tabs{display:flex;border-bottom:2px solid var(--s200);margin-bottom:0;overflow-x:auto}
+  .tab{padding:8px 16px;font-size:13px;font-weight:400;color:var(--s400);background:none;border:none;
+    border-bottom:2px solid transparent;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;
+    margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+  .tab:hover{color:var(--s700)}
+  .tab.on{font-weight:600;color:var(--s900);border-bottom-color:var(--s900)}
+  .pnl{display:none}.pnl.on{display:block}
+
+  /* Top 10 Leaderboard */
+  .lb{margin:20px 0}
+  .lb-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:6px;
+    background:var(--s50);border:1px solid var(--s200);transition:transform .1s}
+  .lb-row:hover{transform:translateX(3px)}
+  .lb-rank{font-size:18px;font-weight:700;color:var(--s300);width:28px;text-align:center}
+  .lb-row:nth-child(1) .lb-rank{color:var(--b600)}
+  .lb-row:nth-child(2) .lb-rank{color:var(--b600)}
+  .lb-row:nth-child(3) .lb-rank{color:var(--b600)}
+  .lb-tk{font-weight:700;font-size:15px;width:60px}
+  .lb-bar-wrap{flex:1;height:22px;background:var(--s100);border-radius:4px;overflow:hidden;position:relative}
+  .lb-bar{height:100%;border-radius:4px;transition:width .4s}
+  .lb-bar.put{background:linear-gradient(90deg,#ef4444,#fca5a5)}
+  .lb-bar.call{background:linear-gradient(90deg,#22c55e,#86efac)}
+  .lb-bar.mix{background:linear-gradient(90deg,#3b82f6,#93c5fd)}
+  .lb-val{position:absolute;right:8px;top:3px;font-size:11px;font-weight:600;color:var(--s700)}
+  .lb-meta{font-size:11px;color:var(--s500);width:120px;text-align:right}
+  .lb-tag{display:inline-block;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600;margin-left:6px}
+  .lb-tag.bear{background:var(--r100);color:var(--r600)}
+  .lb-tag.bull{background:var(--g100);color:var(--g600)}
+  .lb-tag.neutral{background:var(--b100);color:var(--b600)}
+
+  /* Sort selector */
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0}
+  .controls label{font-size:11px;color:var(--s500);text-transform:uppercase;letter-spacing:.06em}
+  .controls select,.controls input{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;padding:6px 10px;
+    border:1px solid var(--s200);border-radius:6px;background:var(--s50);color:var(--s900);
+    outline:none;cursor:pointer}
+  .controls select:focus,.controls input:focus{border-color:var(--b600)}
+
+  /* Data table */
+  .tbl-wrap{overflow-x:auto;margin:12px 0}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--s500);
+    background:var(--s100);padding:8px 10px;text-align:left;border-bottom:2px solid var(--s200);
+    cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0}
+  th:hover{color:var(--s900)}
+  th .arr{font-size:8px;margin-left:3px;opacity:.5}
+  th.sorted .arr{opacity:1}
+  td{padding:7px 10px;border-bottom:1px solid var(--s200);white-space:nowrap}
+  tr:hover td{background:var(--s50)}
+  .tk-cell{font-weight:700;font-size:13px}
+  .sec-badge{font-size:9px;padding:2px 6px;border-radius:3px;background:var(--s100);color:var(--s500);margin-left:6px}
+  .num-r{text-align:right}
+  .pcr-hi{color:var(--r600);font-weight:600}
+  .pcr-lo{color:var(--g600);font-weight:600}
+  .delta-neg{color:var(--r600)}
+  .delta-pos{color:var(--g600)}
+
+  /* P/C mini bar */
+  .pc-mini{display:flex;height:8px;width:80px;border-radius:4px;overflow:hidden;background:var(--s200)}
+  .pc-mini .p{background:#ef4444}.pc-mini .c{background:#22c55e}
+
+  /* Sector cards in analysis tab */
+  .sc{border:1px solid var(--s200);border-radius:8px;padding:14px 18px;margin-bottom:10px;border-left-width:4px;border-left-style:solid}
+  .sc .top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+  .sc .nm{font-weight:600;font-size:14px}
+  .sc .vl{font-size:11px;color:var(--s500);margin-left:8px}
+  .sc .mt{font-size:10px;color:var(--s400)}
+  .sc .tk{font-size:10px;color:var(--s500);margin-bottom:4px}
+  .sc .ins{font-size:12px;color:var(--s700);line-height:1.45}
+
+  /* Bottom line */
+  .bl{margin-top:28px;border-top:3px solid var(--s900);padding-top:14px}
+  .bl h2{font-family:'DM Serif Display',Georgia,serif;font-size:20px;font-weight:400;margin-bottom:12px}
+  .bl p{font-size:13px;color:#1e293b;line-height:1.6;margin-bottom:10px}
+  .ft{margin-top:20px;font-size:10px;color:var(--s400);text-align:center;padding-bottom:16px}
+
+  @media(max-width:640px){
+    .stats{flex-direction:column}
+    .lb-meta{display:none}
+    .hdr h1{font-size:22px}
+    .tab{padding:8px 10px;font-size:12px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- Header -->
+<div class="hdr">
+  <div class="ey mono">Lone Star Macro · Options Flow Analysis</div>
+  <h1 class="serif">Most Active Options — Feb 26, 2026</h1>
+  <div class="sub">Top 500 contracts · 100 tickers · Bloomberg Terminal · Sorted, filtered, clustered</div>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat"><div class="l mono">Volume</div><div class="v mono">13.5M</div><div class="s">500 contracts</div></div>
+  <div class="stat"><div class="l mono">Notional</div><div class="v mono">$380B+</div><div class="s">100 tickers</div></div>
+  <div class="stat"><div class="l mono">Put/Call</div><div class="v mono">0.83</div><div class="s">6.14M / 7.36M</div></div>
+  <div class="stat"><div class="l mono">Avg IVM</div><div class="v mono">55.2</div><div class="s">across all names</div></div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab on" onclick="showTab('top10')">Top 10 Leaderboard</button>
+  <button class="tab" onclick="showTab('table')">Full Table (50)</button>
+  <button class="tab" onclick="showTab('analysis')">Sector Analysis</button>
+  <button class="tab" onclick="showTab('bottom')">Bottom Line</button>
+</div>
+
+<!-- TAB: Top 10 -->
+<div id="pnl-top10" class="pnl on">
+  <div class="controls">
+    <label>Rank by:</label>
+    <select id="lb-sort" onchange="renderLeaderboard()">
+      <option value="v">Total Volume</option>
+      <option value="n">Notional ($M)</option>
+      <option value="iv">Implied Vol</option>
+      <option value="pcr">Put/Call Ratio (bearish)</option>
+      <option value="pcr_low">Put/Call Ratio (bullish)</option>
+      <option value="oi">Open Interest</option>
+    </select>
+    <label style="margin-left:12px">Sector:</label>
+    <select id="lb-sector" onchange="renderLeaderboard()">
+      <option value="all">All Sectors</option>
+    </select>
+  </div>
+  <div id="leaderboard" class="lb"></div>
+</div>
+
+<!-- TAB: Full Table -->
+<div id="pnl-table" class="pnl">
+  <div class="controls">
+    <label>Sector:</label>
+    <select id="tbl-sector" onchange="renderTable()">
+      <option value="all">All Sectors</option>
+    </select>
+    <label style="margin-left:12px">Search:</label>
+    <input type="text" id="tbl-search" placeholder="Ticker..." oninput="renderTable()" style="width:90px">
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead id="tbl-head"></thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB: Sector Analysis -->
+<div id="pnl-analysis" class="pnl">
+  <div style="margin-top:16px">
+  <div class="sc" style="border-left-color:#2563eb">
+    <div class="top"><div><span class="nm">Broad Index Hedging</span><span class="vl mono">3.34M vol (24.8%)</span></div><div class="mt mono">IVM 22.5 · Δ -0.06</div></div>
+    <div class="tk mono">SPY, QQQ, IWM, SPX, SPXW, XSP</div>
+    <div class="ins">Massive put-heavy positioning. IWM P/C ratio of 17.5x signals extreme small-cap fear. $70.8B notional in deep OTM index puts alone — institutional portfolio insurance is elevated.</div>
+  </div>
+  <div class="sc" style="border-left-color:#7c3aed">
+    <div class="top"><div><span class="nm">Semiconductors &amp; AI</span><span class="vl mono">2.17M vol (16.1%)</span></div><div class="mt mono">IVM 53.3 · Δ +0.06</div></div>
+    <div class="tk mono">NVDA, AMD, SMH, SMCI, WOLF</div>
+    <div class="ins">NVDA dominates at 2M contracts. Balanced P/C (0.51) suggests two-way action — hedging AND speculative upside bets. IV at 50+ reflects earnings/macro uncertainty.</div>
+  </div>
+  <div class="sc" style="border-left-color:#db2777">
+    <div class="top"><div><span class="nm">Media &amp; Streaming</span><span class="vl mono">1.75M vol (13.0%)</span></div><div class="mt mono">IVM 40.6 · Δ +0.29</div></div>
+    <div class="tk mono">NFLX, WBD</div>
+    <div class="ins">Split personality: NFLX is overwhelmingly bullish (P/C 0.08). WBD is the opposite — 38.9x P/C ratio, massive put positioning suggesting restructuring/distress hedging.</div>
+  </div>
+  <div class="sc" style="border-left-color:#ea580c">
+    <div class="top"><div><span class="nm">Volatility Complex</span><span class="vl mono">642K vol (4.8%)</span></div><div class="mt mono">IVM 140.4 · Δ +0.14</div></div>
+    <div class="tk mono">VIX, UVIX</div>
+    <div class="ins">VIX call-heavy (P/C 0.39) — traders buying upside vol protection. UVIX activity suggests leveraged vol positioning for a potential spike.</div>
+  </div>
+  <div class="sc" style="border-left-color:#0891b2">
+    <div class="top"><div><span class="nm">Credit &amp; Rates</span><span class="vl mono">657K vol (4.9%)</span></div><div class="mt mono">IVM 9.3 · Δ -0.07</div></div>
+    <div class="tk mono">HYG, TLT</div>
+    <div class="ins">HYG puts (P/C 9.0x) are a clear credit deterioration hedge. TLT skews bullish (call-heavy, P/C 0.26) — traders betting on rate cuts / flight to quality.</div>
+  </div>
+  <div class="sc" style="border-left-color:#f59e0b">
+    <div class="top"><div><span class="nm">Crypto-Adjacent</span><span class="vl mono">412K+ vol (3.4%)</span></div><div class="mt mono">IVM 70.6 · Δ +0.09</div></div>
+    <div class="tk mono">MSTR, MARA, IBIT, COIN, CORZ</div>
+    <div class="ins">All call-heavy. MSTR P/C at 0.00 (pure call speculation). Crypto proxy plays are firmly in bullish-speculative mode.</div>
+  </div>
+  <div class="sc" style="border-left-color:#d4a017">
+    <div class="top"><div><span class="nm">Precious Metals</span><span class="vl mono">337K vol (2.5%)</span></div><div class="mt mono">IVM 65.5 · Δ +0.39</div></div>
+    <div class="tk mono">GLD, SLV</div>
+    <div class="ins">100% call-dominated on GLD. SLV also call-heavy. Strong safe-haven / inflation hedge conviction cluster.</div>
+  </div>
+  <div class="sc" style="border-left-color:#16a34a">
+    <div class="top"><div><span class="nm">EV &amp; Auto</span><span class="vl mono">537K vol (4.0%)</span></div><div class="mt mono">IVM 51.1 · Δ +0.10</div></div>
+    <div class="tk mono">TSLA, NIO, RIVN, LCID</div>
+    <div class="ins">TSLA leads with modestly call-heavy flow (P/C 0.70). EV names clustered around elevated IV. Slight bullish lean but hedged.</div>
+  </div>
+  <div class="sc" style="border-left-color:#64748b">
+    <div class="top"><div><span class="nm">Defense</span><span class="vl mono">235K vol (1.7%)</span></div><div class="mt mono">IVM 54.5 · Δ +0.60</div></div>
+    <div class="tk mono">LMT, PLTR</div>
+    <div class="ins">LMT is ALL calls with near-1.0 delta. Pure directional bullish conviction on defense spending.</div>
+  </div>
+  <div class="sc" style="border-left-color:#9333ea">
+    <div class="top"><div><span class="nm">Fintech &amp; Financials</span><span class="vl mono">564K vol (4.2%)</span></div><div class="mt mono">IVM 45.0 · Δ -0.07</div></div>
+    <div class="tk mono">SOFI, XLF, GS</div>
+    <div class="ins">Divergent: SOFI is call-heavy speculative (P/C 0.34). XLF is put-heavy hedging (P/C 5.7x). GS is pure call buying.</div>
+  </div>
+  </div>
+</div>
+
+<!-- TAB: Bottom Line -->
+<div id="pnl-bottom" class="pnl">
+  <div class="bl" style="border-top:none;margin-top:16px">
+    <h2 class="serif">Bottom Line</h2>
+    <p>The Feb 26 options flow tells a <strong>two-track story</strong>. On one hand, institutional money is aggressively buying downside protection across indices (SPY, QQQ, IWM) and credit (HYG), with some of the most extreme put/call ratios in small-caps and high-yield. This is textbook <strong>late-cycle hedging behavior</strong>.</p>
+    <p>On the other hand, speculative call buying is concentrated in NFLX, crypto proxies (MSTR, MARA), precious metals (GLD, SLV), and defense (LMT). Traders are positioning for <strong>sector rotation into perceived winners</strong> — companies with pricing power, hard-asset exposure, or government spending tailwinds.</p>
+    <p>The divergence between index-level fear and single-stock bullishness is the defining feature. The market isn't uniformly bearish or bullish — it's <strong>selectively hedged and selectively greedy</strong>, which historically characterizes <strong>transitional market regimes</strong>.</p>
+  </div>
+</div>
+
+<div class="ft mono">Analysis by Dr. T · Lone Star Macro · Bloomberg Terminal · Feb 26, 2026</div>
+</div>
+
+<script>
+// DATA
+const D=[
+{t:"NVDA",v:2003865,n:35460.4,iv:50.2,d:0.046,m:106.3,pv:680953,cv:1322912,pcr:0.51,c:57,oi:2219365,s:"Semis/AI"},
+{t:"SPY",v:1557092,n:106906.8,iv:19.1,d:-0.035,m:98.3,pv:1025948,cv:531144,pcr:1.93,c:53,oi:610625,s:"Index"},
+{t:"NFLX",v:1247387,n:12026.7,iv:42.7,d:0.342,m:104.6,pv:95264,cv:1152123,pcr:0.08,c:36,oi:705704,s:"Media"},
+{t:"QQQ",v:800812,n:48632.5,iv:22.7,d:-0.047,m:99.1,pv:583777,cv:217035,pcr:2.69,c:28,oi:371393,s:"Index"},
+{t:"IWM",v:789453,n:20637.9,iv:28.3,d:-0.201,m:96.3,pv:746826,cv:42627,pcr:17.52,c:21,oi:657592,s:"Index"},
+{t:"VIX",v:540097,n:1072.1,iv:127.0,d:0.105,m:139.2,pv:151595,cv:388502,pcr:0.39,c:23,oi:2504290,s:"Volatility"},
+{t:"HYG",v:511731,n:4130.4,iv:8.7,d:-0.168,m:97.1,pv:460719,cv:51012,pcr:9.03,c:19,oi:2949618,s:"Credit/Rates"},
+{t:"TSLA",v:506213,n:20374.1,iv:49.7,d:0.082,m:100.6,pv:208890,cv:297323,pcr:0.70,c:24,oi:55907,s:"EV/Auto"},
+{t:"WBD",v:505128,n:1422.4,iv:29.4,d:0.025,m:84.2,pv:492472,cv:12656,pcr:38.91,c:7,oi:464871,s:"Media"},
+{t:"SOFI",v:331506,n:588.8,iv:66.6,d:0.007,m:106.6,pv:84396,cv:247110,pcr:0.34,c:8,oi:174128,s:"Fintech"},
+{t:"XLF",v:224920,n:1156.8,iv:24.7,d:-0.217,m:96.6,pv:191540,cv:33380,pcr:5.74,c:10,oi:502621,s:"Financials"},
+{t:"GLD",v:178738,n:8646.6,iv:33.4,d:0.424,m:101.9,pv:0,cv:178738,pcr:0.0,c:4,oi:223350,s:"Metals"},
+{t:"AAPL",v:177580,n:4691.3,iv:28.5,d:0.033,m:104.1,pv:12066,cv:165514,pcr:0.07,c:10,oi:108754,s:"Big Tech"},
+{t:"LMT",v:164520,n:10849.3,iv:58.5,d:0.988,m:74.9,pv:0,cv:164520,pcr:0.0,c:6,oi:2918,s:"Defense"},
+{t:"SLV",v:158366,n:1346.0,iv:81.6,d:0.373,m:100.9,pv:15878,cv:142488,pcr:0.11,c:8,oi:135013,s:"Metals"},
+{t:"MSTR",v:155252,n:2010.5,iv:68.4,d:0.294,m:106.2,pv:0,cv:155252,pcr:0.0,c:6,oi:17354,s:"Crypto"},
+{t:"TLT",v:144944,n:1316.4,iv:11.0,d:0.200,m:100.8,pv:30031,cv:114913,pcr:0.26,c:7,oi:155537,s:"Credit/Rates"},
+{t:"MARA",v:135752,n:121.5,iv:102.9,d:0.145,m:103.4,pv:24658,cv:111094,pcr:0.22,c:4,oi:132266,s:"Crypto"},
+{t:"MSFT",v:132409,n:5203.9,iv:0,d:-1.0,m:122.1,pv:132409,cv:0,pcr:999,c:6,oi:7181,s:"Big Tech"},
+{t:"SPXW",v:126081,n:86729.6,iv:29.0,d:0.005,m:95.0,pv:25323,cv:100758,pcr:0.25,c:8,oi:18812,s:"Index"},
+{t:"BYND",v:120835,n:11.4,iv:230.6,d:0.390,m:126.9,pv:0,cv:120835,pcr:0.0,c:5,oi:84349,s:"Speculative"},
+{t:"ONDS",v:118471,n:119.2,iv:131.5,d:0.154,m:83.2,pv:89068,cv:29403,pcr:3.03,c:4,oi:55736,s:"Speculative"},
+{t:"IBIT",v:106976,n:397.8,iv:54.0,d:0.039,m:103.5,pv:44222,cv:62754,pcr:0.70,c:7,oi:79374,s:"Crypto"},
+{t:"SMR",v:105306,n:135.6,iv:103.2,d:0.017,m:100.0,pv:62158,cv:43148,pcr:1.44,c:4,oi:2125,s:"Nuclear"},
+{t:"UVIX",v:101713,n:63.8,iv:191.8,d:0.277,m:112.9,pv:11802,cv:89911,pcr:0.13,c:6,oi:11026,s:"Volatility"},
+{t:"CRWV",v:100694,n:801.1,iv:104.4,d:-0.037,m:85.9,pv:63084,cv:37610,pcr:1.68,c:3,oi:124909,s:"Speculative"},
+{t:"EEM",v:92721,n:580.2,iv:24.6,d:0.108,m:92.7,pv:39181,cv:53540,pcr:0.73,c:5,oi:501081,s:"Intl"},
+{t:"ORCL",v:90952,n:1320.0,iv:97.7,d:-0.044,m:79.9,pv:90952,cv:0,pcr:999,c:1,oi:124,s:"Big Tech"},
+{t:"SMCI",v:81854,n:265.0,iv:80.3,d:0.232,m:96.4,pv:15038,cv:66816,pcr:0.23,c:5,oi:19921,s:"Semis/AI"},
+{t:"XLP",v:77957,n:701.8,iv:21.5,d:-0.141,m:90.7,pv:77957,cv:0,pcr:999,c:3,oi:240503,s:"Other"},
+{t:"FIGS",v:74442,n:114.9,iv:64.2,d:0.576,m:97.2,pv:0,cv:74442,pcr:0.0,c:2,oi:52718,s:"Other"},
+{t:"GS",v:71244,n:6115.0,iv:76.6,d:0.988,m:69.9,pv:0,cv:71244,pcr:0.0,c:3,oi:695,s:"Financials"},
+{t:"XLE",v:70939,n:396.8,iv:37.3,d:0.133,m:101.3,pv:18011,cv:52928,pcr:0.34,c:3,oi:215478,s:"Energy"},
+{t:"AMZN",v:70835,n:1487.5,iv:33.6,d:0.470,m:100.5,pv:0,cv:70835,pcr:0.0,c:5,oi:23306,s:"Big Tech"},
+{t:"PLTR",v:70822,n:971.6,iv:50.4,d:0.208,m:101.0,pv:13103,cv:57719,pcr:0.23,c:4,oi:31324,s:"Defense/Tech"},
+{t:"OWL",v:66163,n:69.7,iv:72.5,d:-0.221,m:102.0,pv:45812,cv:20351,pcr:2.25,c:4,oi:48462,s:"Financials"},
+{t:"LQD",v:65009,n:726.1,iv:10.1,d:-0.247,m:95.8,pv:65009,cv:0,pcr:999,c:1,oi:65275,s:"Other"},
+{t:"CORZ",v:63897,n:108.7,iv:112.1,d:0.150,m:117.6,pv:14423,cv:49474,pcr:0.29,c:3,oi:149498,s:"Crypto"},
+{t:"INTC",v:62599,n:285.5,iv:60.3,d:0.270,m:109.6,pv:0,cv:62599,pcr:0.0,c:2,oi:83949,s:"Other"},
+{t:"AMD",v:60824,n:1219.6,iv:68.5,d:0.181,m:91.0,pv:47419,cv:13405,pcr:3.54,c:2,oi:7448,s:"Semis/AI"},
+{t:"IGV",v:59251,n:483.3,iv:41.1,d:0.152,m:90.4,pv:24539,cv:34712,pcr:0.71,c:4,oi:55654,s:"Other"},
+{t:"EWZ",v:57102,n:221.3,iv:31.1,d:-0.232,m:91.0,pv:57102,cv:0,pcr:999,c:4,oi:33815,s:"Intl"},
+{t:"RUN",v:55335,n:73.3,iv:89.6,d:-0.059,m:113.2,pv:40070,cv:15265,pcr:2.62,c:2,oi:40865,s:"Solar"},
+{t:"NKE",v:53750,n:334.2,iv:0,d:1.0,m:68.4,pv:0,cv:53750,pcr:0.0,c:2,oi:2650,s:"Other"},
+{t:"SPX",v:53613,n:36879.7,iv:21.2,d:0.156,m:94.5,pv:27123,cv:26490,pcr:1.02,c:4,oi:572411,s:"Index"},
+{t:"IREN",v:48373,n:198.0,iv:148.0,d:0.123,m:83.0,pv:36502,cv:11871,pcr:3.07,c:2,oi:5675,s:"Crypto"},
+{t:"RKT",v:43424,n:79.0,iv:62.8,d:0.302,m:109.9,pv:0,cv:43424,pcr:0.0,c:1,oi:72726,s:"Other"},
+{t:"FHN",v:40334,n:95.8,iv:35.2,d:0.218,m:115.8,pv:0,cv:40334,pcr:0.0,c:2,oi:13000,s:"Other"},
+{t:"PBRA",v:35991,n:55.4,iv:33.1,d:0.232,m:130.0,pv:0,cv:35991,pcr:0.0,c:1,oi:209,s:"Other"},
+{t:"XLU",v:35038,n:167.3,iv:22.1,d:-0.127,m:88.0,pv:35038,cv:0,pcr:999,c:1,oi:40466,s:"Other"}
+];
+
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':n.toString();
+const fmtD=n=>n>=1e4?'$'+(n/1e3).toFixed(0)+'B':'$'+n.toFixed(0)+'M';
+const pcrFmt=p=>p>=999?'∞':p.toFixed(2);
+
+// Populate sector filters
+const sectors=[...new Set(D.map(d=>d.s))].sort();
+['lb-sector','tbl-sector'].forEach(id=>{
+  const sel=document.getElementById(id);
+  sectors.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o)});
+});
+
+// Tab switching
+function showTab(id){
+  document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('pnl-'+id).classList.add('on');
+  event.target.classList.add('on');
+}
+
+// LEADERBOARD
+function renderLeaderboard(){
+  const sortKey=document.getElementById('lb-sort').value;
+  const sec=document.getElementById('lb-sector').value;
+  let data=sec==='all'?[...D]:D.filter(d=>d.s===sec);
+
+  if(sortKey==='pcr_low'){
+    data=data.filter(d=>d.pcr<999).sort((a,b)=>a.pcr-b.pcr);
+  } else if(sortKey==='pcr'){
+    data=data.filter(d=>d.pcr<999).sort((a,b)=>b.pcr-a.pcr);
+  } else {
+    data.sort((a,b)=>b[sortKey]-a[sortKey]);
+  }
+
+  const top=data.slice(0,10);
+  const maxV=top.length?top[0][sortKey==='pcr_low'?'v':sortKey==='pcr'?'v':sortKey]:1;
+  const el=document.getElementById('leaderboard');
+  el.innerHTML='';
+
+  top.forEach((d,i)=>{
+    const pPct=d.v>0?(d.pv/d.v*100):0;
+    const barPct=sortKey==='pcr_low'||sortKey==='pcr'?(d.v/Math.max(...top.map(x=>x.v))*100):(d[sortKey]/maxV*100);
+    const barClass=d.pcr>2?'put':d.pcr<0.5?'call':'mix';
+    const tagClass=d.pcr>1.5?'bear':d.pcr<0.5?'bull':'neutral';
+    const tagText=d.pcr>1.5?'BEARISH':d.pcr<0.5?'BULLISH':'MIXED';
+
+    let valText='';
+    if(sortKey==='v')valText=fmt(d.v);
+    else if(sortKey==='n')valText=fmtD(d.n);
+    else if(sortKey==='iv')valText=d.iv.toFixed(1)+'%';
+    else if(sortKey==='pcr'||sortKey==='pcr_low')valText='P/C '+pcrFmt(d.pcr);
+    else if(sortKey==='oi')valText=fmt(d.oi);
+
+    el.innerHTML+=`
+      <div class="lb-row">
+        <div class="lb-rank mono">${i+1}</div>
+        <div class="lb-tk">${d.t}</div>
+        <div class="lb-bar-wrap">
+          <div class="lb-bar ${barClass}" style="width:${barPct}%"></div>
+          <div class="lb-val mono">${valText}</div>
+        </div>
+        <div class="lb-meta mono">${d.s}<span class="lb-tag ${tagClass}">${tagText}</span></div>
+      </div>`;
+  });
+}
+
+// TABLE
+let tblSort={col:'v',asc:false};
+const cols=[
+  {key:'t',label:'Ticker',cls:'tk-cell'},
+  {key:'s',label:'Sector'},
+  {key:'v',label:'Volume',num:true},
+  {key:'n',label:'Notional $M',num:true},
+  {key:'iv',label:'Avg IVM',num:true},
+  {key:'d',label:'Avg Delta',num:true},
+  {key:'pcr',label:'P/C Ratio',num:true},
+  {key:'pc',label:'Put/Call Split'},
+  {key:'oi',label:'Open Int',num:true},
+  {key:'c',label:'Contracts',num:true},
+];
+
+function renderTable(){
+  const sec=document.getElementById('tbl-sector').value;
+  const q=document.getElementById('tbl-search').value.toUpperCase();
+  let data=sec==='all'?[...D]:D.filter(d=>d.s===sec);
+  if(q)data=data.filter(d=>d.t.includes(q));
+
+  data.sort((a,b)=>{
+    let va=a[tblSort.col],vb=b[tblSort.col];
+    if(tblSort.col==='t'||tblSort.col==='s')return tblSort.asc?String(va).localeCompare(vb):String(vb).localeCompare(va);
+    return tblSort.asc?va-vb:vb-va;
+  });
+
+  // Head
+  const hd=document.getElementById('tbl-head');
+  hd.innerHTML='<tr>'+cols.map(c=>{
+    const sorted=tblSort.col===c.key;
+    const arr=sorted?(tblSort.asc?'▲':'▼'):'↕';
+    return `<th class="${sorted?'sorted':''}" onclick="sortTable('${c.key}')">${c.label}<span class="arr">${arr}</span></th>`;
+  }).join('')+'</tr>';
+
+  // Body
+  const bd=document.getElementById('tbl-body');
+  bd.innerHTML=data.map(d=>{
+    const pPct=d.v>0?(d.pv/d.v*100):0;
+    const pcrCls=d.pcr>2?'pcr-hi':d.pcr<0.5?'pcr-lo':'';
+    const dCls=d.d<0?'delta-neg':d.d>0?'delta-pos':'';
+    return `<tr>
+      <td class="tk-cell">${d.t}</td>
+      <td><span class="sec-badge">${d.s}</span></td>
+      <td class="num-r mono">${fmt(d.v)}</td>
+      <td class="num-r mono">${fmtD(d.n)}</td>
+      <td class="num-r mono">${d.iv?d.iv.toFixed(1):'—'}</td>
+      <td class="num-r mono ${dCls}">${d.d>0?'+':''}${d.d.toFixed(3)}</td>
+      <td class="num-r mono ${pcrCls}">${pcrFmt(d.pcr)}</td>
+      <td><div class="pc-mini"><div class="p" style="width:${pPct}%"></div><div class="c" style="width:${100-pPct}%"></div></div></td>
+      <td class="num-r mono">${fmt(d.oi)}</td>
+      <td class="num-r mono">${d.c}</td>
+    </tr>`;
+  }).join('');
+}
+
+function sortTable(col){
+  if(tblSort.col===col)tblSort.asc=!tblSort.asc;
+  else{tblSort.col=col;tblSort.asc=false;}
+  renderTable();
+}
+
+// Init
+renderLeaderboard();
+renderTable();
+</script>
+</body>
+</html>
